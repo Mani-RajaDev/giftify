@@ -1,0 +1,23 @@
+<form action="" method="post">
+  {% csrf_token %}
+  {% for field in  profileForm%}
+  <div>
+    {{ field.errors }}
+    {{ field.label_tag }}
+    {{ field }}
+  <span class="editBtn" data-target="{{ field.id_for_label }}">Edit</span>
+  </div>
+  {% endfor %}
+  <button type="submit">Save changes</button>
+</form>
+<script>
+  const editButtons = document.querySelectorAll(".editBtn");
+
+  editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-target');
+      const inputElement = document.getElementById(targetId);
+      inputElement.removeAttribute('readonly');
+    })
+  })
+</script>
