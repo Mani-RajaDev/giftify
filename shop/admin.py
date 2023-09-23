@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Product, Category, Offer, Order, OrderItem
+from .models import Product, Category, Offer, Order, OrderItem, Cart, CartItem
 
 
 @admin.register(Product)
@@ -24,6 +24,17 @@ class OfferAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ["get_order_number", "get_ordered_by", "is_guest", "get_ordered_on"]
 
+
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ["get_order_number", "__str__", "product", "quantity", "subtotal"]
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ["user", "is_guest", "created_at"]
+
+
+@admin.register(CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = ["cart", "product", "quantity"]

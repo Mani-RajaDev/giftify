@@ -106,13 +106,13 @@ class Order(models.Model):
     @admin.display(description="Order Number")
     def get_order_number(self):
         return f"#{self.id}"
-    
+
     @admin.display(description="Order By")
     def get_ordered_by(self):
         return (
             self.user.address.name if self.user else self.guest_user.guest_address.name
         )
-    
+
     @admin.display(description="Order On")
     def get_ordered_on(self):
         formatted_date = self.order_date.strftime("%d %B %Y (%A)")
@@ -125,13 +125,47 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return f'{self.quantity} x {self.product.name}'
+        return f"{self.quantity} x {self.product.name}"
 
     def subtotal(self):
         return self.quantity * self.product.price
-    
+
     @admin.display(description="Order Number")
     def get_order_number(self):
         return f"#{self.order.pk}"
 
 
+class Cart(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        related_name="cart",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    guest_user = models.OneToOneField(
+        GuestUser,
+        related_name="guest_cart",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Cart for {self.user.email}"
+    
+    def is_guest(self):
+        return True if self.guest_user else False
+
+    is_guest.boolean = True
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name} in Cart {self.cart.id}"
