@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from verify_email.email_handler import send_verification_email
 
-from .forms import CustomUserCreationForm, LoginForm
+from .forms import CustomUserCreationForm, LoginForm, ProfileForm, AddressForm
+from .models import Profile, Address
 
 def home(request):
     return HttpResponse("Success")

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "users.apps.UsersConfig",
+    "shop.apps.ShopConfig",
     "phonenumber_field",
     "verify_email.apps.VerifyEmailConfig",
 ]

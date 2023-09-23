@@ -59,7 +59,10 @@ class GuestUserAdmin(admin.ModelAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ["display_fullname", "mobile_number",]
+    list_display = [
+        "display_fullname",
+        "mobile_number",
+    ]
 
 
 @admin.register(Address)
