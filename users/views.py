@@ -10,6 +10,7 @@ from verify_email.email_handler import send_verification_email
 from .forms import CustomUserCreationForm, LoginForm, ProfileForm, AddressForm
 from .models import Profile, Address
 
+
 def home(request):
     return HttpResponse("Success")
 
@@ -48,3 +49,41 @@ def login_view(request):
     context = {"loginForm": loginForm}
 
     return render(request, template_name, context)
+
+
+@login_required
+def profile_view(request):
+    template_name = "users/profile.html"
+
+    if request.user.is_authenticated:
+        profile, created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == "POST":
+        profileForm = ProfileForm(request.POST, instance=profile)
+
+        if profileForm.is_valid():
+            profileForm.save()
+            return redirect("users:login")
+
+    else:
+        profileForm = ProfileForm(instance=profile)
+
+    return render(request, template_name, {"profileForm": profileForm})
+
+
+def address_view(request):
+    template_name = "users/address.html"
+
+    if request.user.is_authenticated:
+        address, created = Address.objects.get_or_create(user=request.user)
+
+    if request.method == "POST":
+        addressForm = AddressForm(request.POST, instance=address)
+
+        if addressForm.is_valid():
+            addressForm.save()
+            return redirect("users:login")
+    else:
+        addressForm = AddressForm(instance=address)
+
+    return render(request, template_name, {"addressForm": addressForm})

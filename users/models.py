@@ -55,7 +55,7 @@ class Profile(models.Model):
         max_length=255, null=True, blank=True, verbose_name="Last name (optional)"
     )
     mobile_number = PhoneNumberField(region="IN", max_length=13, unique=True)
-    
+
     def __str__(self):
         return self.first_name.title()
 
@@ -123,10 +123,8 @@ class Address(models.Model):
         null=True,
         blank=True,
     )
-    name = models.CharField(max_length=255, default="Mani")
-    mobile_number = PhoneNumberField(
-        region="IN", max_length=13, default="+91908750532", unique=True
-    )
+    name = models.CharField(max_length=255)
+    mobile_number = PhoneNumberField(region="IN", max_length=13, unique=True)
     pincode = models.CharField(max_length=6)
     address = models.TextField()
     city_district_town = models.CharField(

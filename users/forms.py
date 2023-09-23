@@ -59,3 +59,19 @@ class LoginForm(Form):
         max_length=255,
     )
     password = CharField(label="Password", widget=PasswordInput)
+
+
+class ProfileForm(ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ["first_name", "last_name", "mobile_number"]
+        widgets = {
+            "first_name": TextInput(attrs={"readonly": True}),
+            "last_name": TextInput(attrs={"readonly": True}),
+        }
+
+
+class AddressForm(ModelForm):
+    class Meta:
+        model = models.Address
+        exclude = ["user", "guest_user"]
